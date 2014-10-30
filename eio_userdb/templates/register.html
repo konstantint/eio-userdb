@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% import "includes/form.html" as macros %}
+{% block content %}
+   <h1>Registreerimisvorm</h1>
+   <div class="row">
+      <ul class="col-sm-10 col-sm-offset-2">
+	 <li>Palun kasutage kehtivat meiliaadressi (sinna saadetakse konto aktiveerimiseks vajalik kood)</li>
+	 <li>Kasutajatunnuseks on meiliaadress.</li>
+	 <li>Unustatud parooli taastamiseks sisestage ainult meiliaadress</li>
+	 <li>Uue kasutaja registreerimisel on k&otilde;ik v&auml;ljad kohustuslikud.</li>
+      </ul>
+   </div>
+   {{ macros.render_form(form) }}
+{% endblock %}
