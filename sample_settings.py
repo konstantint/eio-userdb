@@ -4,7 +4,7 @@ SQLALCHEMY_ECHO = True
 MAIL_SUPPRESS_SEND = False
 
 # App settings
-SECRET_KEY = 's3cr3t-k3y'
+SECRET_KEY = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
 SECRET_PASSWORD = 's3cr3t-p4ssw0rd'
 CONTEST_ID = 1
 REGISTRATION_SERVER_URL = 'http://localhost:5000/'
