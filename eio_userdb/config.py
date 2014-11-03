@@ -31,9 +31,9 @@ class Config(object):
     
     # Flask-mail config
     MAIL_SERVER = 'localhost'
-    MAIL_PORT = 465
+    MAIL_PORT = 25 
     MAIL_USE_TLS = False
-    MAIL_USE_SSL = True
+    MAIL_USE_SSL = False
     MAIL_USERNAME = None
     MAIL_PASSWORD = None
     MAIL_DEFAULT_SENDER = 'Eesti Informaatika Olympiaadide Server <kt@ut.ee>'
