@@ -44,7 +44,7 @@ class Registration(Base):
 
     def activation_code(self, salt):
         import hashlib
-        from . import app
+        from .main import app
         m = hashlib.md5()
         m.update(app.config['SECRET_KEY'])
         m.update(self.email)

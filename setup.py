@@ -17,9 +17,9 @@ setup(name='eio-userdb',
       license='MIT',
       packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
       include_package_data=True,
-      zip_safe=True,
+      zip_safe=False,
       install_requires=[
-          # -*- Extra requirements: -*-
+          "Flask", "Flask-SQLAlchemy", "Flask-Login", "Flask-WTF", "Flask-Mail", "Flask-Babel", "Flask-Admin"
       ],
       entry_points={"console_scripts": ["eioUserDB=eio_userdb:main"]},
       )
