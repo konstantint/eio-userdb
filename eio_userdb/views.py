@@ -18,11 +18,13 @@ from .main import app, db, mail
 from .model import Registration
 from . import logic
 
+import logging
+log = logging.getLogger('eio_userdb.views')
 
 # ---------------------------------------------------------------------------- #
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return redirect(url_for('register'))
 
 # ---------------------------------------------------------------------------- #
 class RegistrationForm(Form):

@@ -17,7 +17,7 @@ SQLALCHEMY_DATABASE_URI = 'sqlite:///%s' % os.path.join(os.path.dirname(os.path.
 # Deployment option
 APPLICATION_ROOT = '/'  # Untested
 DEBUG_SERVER_HOST = '0.0.0.0'
-DEBUG_SERVER_PORT = 5000
+DEBUG_SERVER_PORT = 33300
 
 # Flask-mail config
 MAIL_SERVER = 'localhost'

@@ -22,5 +22,7 @@ setup(name='eio-userdb',
       install_requires=[
           "Flask", "Flask-SQLAlchemy", "Flask-Login", "Flask-WTF", "Flask-Mail", "Flask-Babel", "Flask-Admin"
       ],
-      entry_points={"console_scripts": ["eioUserDB=eio_userdb:main"]},
+      entry_points={
+        "console_scripts": ["eioUserDB=eio_userdb:main"],
+        "paste.app_factory": ["main=eio_userdb.main:app_factory"]}
       )
