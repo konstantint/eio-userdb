@@ -34,9 +34,10 @@ class RegistrationForm(Form):
     school = StringField('Kool/asutus', validators=[DataRequired(), Length(max=255)], description=u'(kooli korral kindlasti ametlik nimi eesti keeles)')
     grade = StringField('Klass', validators=[DataRequired(), Length(max=255)], description=u'(õpilastel 1..12, üliõpilastel I..V, muudel -)')
     email = StringField('Meiliaadress', validators=[DataRequired(), Email(), Length(max=120)])
-    password = PasswordField('Parool', validators=[DataRequired(), Length(min=7, message=u'Parool liiga lühike'), 
+    password = PasswordField('Parool', validators=[DataRequired(), Length(min=6, message=u'Parool liiga lühike'), 
                                                    EqualTo('confirm', message=u'Parool ja parooli kordus ei ole identsed'),
-                                                   Length(max=255)])
+                                                   Length(max=255)],
+                                       description=u'Palun, ära kasuta siin oma mujal juba kasutusel oleva parooli!')
     confirm = PasswordField('Parooli kordus')
     agree = BooleanField(u'Olen nõus, et minu andmeid kasutatakse informaatikavõistlustega seotud teavitusteks', validators=[DataRequired(message=u'Puudub nõusolek andmete kasutamiseks')])
 

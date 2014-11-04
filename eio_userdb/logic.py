@@ -26,13 +26,14 @@ def send_activation_email(r):
                   subject="Registreerimise kinnitus",
                   body=u"""Olete registreerunud EIO lahenduste esitamise süsteemi kasutajaks.
 
-Palun, aktiveerige oma kasutajat järgneva 20 tunni jooksul, sisestades
-aktiveerimiskoodi %(activation_code)s lehel %(registration_server_url)sactivate.
+Oma konto aktiveerimiseks sisestage järgneva 20 tunni jooksl kood
+%(activation_code)s lehel %(registration_server_url)sactivate.
 
-Kui see on tehtud, saate võistlusserverisse sisse logida lehel %(contest_server_url)s,
-kasutades kasutajatunnust %(email)s ning Teie valitud parooli.
+Kui see on tehtud, saate alates 10. novembrist võistlusserverisse sisse logida lehel
+%(contest_server_url)s,
+kasutades kasutajatunnust %(email)s ning omavalitud parooli.
 
-Pange tähele, et kasutajatunnus ja parool on tõstetundlikud.
+Pange tähele, et kasutajatunnus ja parool on tõutundlikud.
 
 Lugupidamisega,
 Veebiserver
