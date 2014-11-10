@@ -47,9 +47,9 @@ class Registration(Base):
         from .main import app
         m = hashlib.md5()
         m.update(app.config['SECRET_KEY'])
-        m.update(self.email)
+        m.update(self.email.encode('utf-8'))
         m.update('|')
-        m.update(self.password)
+        m.update(self.password.encode('utf-8'))
         m.update('|')
         m.update(str(salt))
         return '$%d$%s' % (self.id, m.hexdigest())
