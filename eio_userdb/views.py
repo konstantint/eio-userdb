@@ -24,8 +24,11 @@ log = logging.getLogger('eio_userdb.views')
 # ---------------------------------------------------------------------------- #
 @app.route('/')
 def index():
-    return redirect(url_for('register'))
+    return redirect(url_for('over'))
 
+@app.route('/over')
+def over():
+    return render_template('over.html')
 # ---------------------------------------------------------------------------- #
 class RegistrationForm(Form):
     first_name = StringField('Eesnimi', validators=[DataRequired(), Length(max=255)])
