@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Development settings
 DEBUG = True
 SQLALCHEMY_ECHO = True
@@ -7,6 +9,7 @@ MAIL_SUPPRESS_SEND = False
 SECRET_KEY = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
 SECRET_PASSWORD = 's3cr3t-p4ssw0rd'
 CONTEST_ID = 1
+CONTEST_TITLE = u'Eesti Informaatika Olümpiaadi Eelvoor'
 REGISTRATION_SERVER_URL = 'http://localhost:5000/'
 CONTEST_SERVER_URL = 'http://localhost/'
 CONTACT_URL = 'http://eio.ut.ee/'

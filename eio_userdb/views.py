@@ -33,7 +33,7 @@ def over():
 class RegistrationForm(Form):
     first_name = StringField('Eesnimi', validators=[DataRequired(), Length(max=255)])
     last_name = StringField('Perenimi', validators=[DataRequired(), Length(max=255)])
-    category = SelectField('Rühm', choices=[('', ''), ('poh', u'Põhikool'), ('gym', u'Gümnaasium'), ('eda', 'Edasijõudnud')], validators=[DataRequired()])
+    category = SelectField(u'Rühm', choices=[('', ''), ('poh', u'Põhikool'), ('gym', u'Gümnaasium'), ('eda', u'Edasijõudnud')], validators=[DataRequired()])
     #category = SelectField('Kategooria', choices=[('', ''), ('school', u'õpilane'), ('university', u'üliõpilane'), ('other', 'muu')], validators=[DataRequired()])
     school = StringField('Kool', validators=[DataRequired(), Length(max=255)], description=u'(kooli ametlik nimi eesti keeles)')
     #school = StringField('Kool/asutus', validators=[DataRequired(), Length(max=255)], description=u'(kooli korral kindlasti ametlik nimi eesti keeles)')

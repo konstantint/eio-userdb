@@ -17,6 +17,7 @@ class Config(object):
     SECRET_KEY = '\xf5\xfd\x94\x90\x9d\xd6;{\xb5l-}^(\xfc?\xbdW\xc6\t'
     SECRET_PASSWORD = 's3cr3t'
     CONTEST_ID = 1
+    CONTEST_TITLE = u'Eesti Informaatika Olümpiaad'
     REGISTRATION_SERVER_URL = 'http://localhost:5000/'
     CONTEST_SERVER_URL = 'http://eio-contest.us.to/'
     CONTACT_URL = 'http://eio.ut.ee/'
