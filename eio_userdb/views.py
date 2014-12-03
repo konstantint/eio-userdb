@@ -24,7 +24,7 @@ log = logging.getLogger('eio_userdb.views')
 # ---------------------------------------------------------------------------- #
 @app.route('/')
 def index():
-    return redirect(url_for('over'))
+    return redirect(url_for('register'))
 
 @app.route('/over')
 def over():

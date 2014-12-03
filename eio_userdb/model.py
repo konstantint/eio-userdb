@@ -69,7 +69,8 @@ class User(Base):
     email = Column(Unicode, nullable=True)
     ip = Column(Unicode, nullable=True)
     hidden = Column(Boolean, nullable=False, default=False)
-
+    division = Column(Unicode, nullable=True)
+    
     contest_id = Column(Integer, nullable=False, index=True)
 
     # A JSON-encoded dictionary of lists of strings: statements["a"]

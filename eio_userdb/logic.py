@@ -96,6 +96,7 @@ def activate(code):
                      last_name = r.last_name,
                      username = r.email,
                      password = r.password,
+                     division = r.category,
                      email = r.email,
                      contest_id = r.contest_id)
             db.session.add(u)
