@@ -29,7 +29,7 @@ def send_activation_email(r):
 Oma konto aktiveerimiseks sisestage järgneva 20 tunni jooksl kood
 %(activation_code)s lehel %(registration_server_url)sactivate.
 
-Kui see on tehtud, saate alates 10. novembrist võistlusserverisse sisse logida lehel
+Kui see on tehtud, saate 6. detsembril võistlusserverisse sisse logida lehel
 %(contest_server_url)s,
 kasutades kasutajatunnust %(email)s ning omavalitud parooli.
 
@@ -49,12 +49,12 @@ def register(r):
         if (len(results) > 0):
             if results[0].activated:
                 flash(Markup(u"Sellise e-mailiga kasutaja juba registreeritud. Parooli vahetada saate <a href='%s'>siit</a>." % url_for('passwordreset') + \
-                            u" Andmete vahetamiseks võtke ühendust <a href='%s'>administraatoriga</a>." % app.config['CONTACT_URL'] ), "danger")
+                        u" Andmete vahetamiseks võtke ühendust <a href='mailto:eio-support@lists.ut.ee'>administraatoriga</a>."), "danger")
                 return
             else:
                 send_activation_email(results[0])
                 flash(Markup(u"Sellise e-mailiga kasutaja juba registreeritud. Kasutaja emailile oli saadetud kiri aktiveerimiskoodiga." + \
-                            u" Kasutaja andmete vahetamiseks võtke ühendust <a href='/'>administraatoriga</a>."), "danger")
+                        u" Kasutaja andmete vahetamiseks võtke ühendust <a href='mailto:eio-support@lists.ut.ee'>administraatoriga</a>."), "danger")
                 return redirect(url_for('activate'))
         
         # Add user to the database and send activation email
