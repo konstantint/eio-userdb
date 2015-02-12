@@ -54,6 +54,7 @@ class MyAdminIndexView(admin.AdminIndexView):
         return redirect(url_for('index'))
 
 class MyModelView(sqla.ModelView):
+    page_size = 500
     def is_accessible(self):
         return not login.current_user.is_anonymous()
 
