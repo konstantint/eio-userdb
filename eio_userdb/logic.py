@@ -23,21 +23,8 @@ def send_activation_email(r):
                'email': r.email}
     
     msg = Message(recipients=[r.email],
-                  subject="Registreerimise kinnitus",
-                  body=u"""Olete registreerunud EIO lahenduste esitamise süsteemi kasutajaks.
-
-Oma konto aktiveerimiseks sisestage järgneva 20 tunni jooksl kood
-%(activation_code)s lehel %(registration_server_url)sactivate.
-
-Kui see on tehtud, saate 6. detsembril võistlusserverisse sisse logida lehel
-%(contest_server_url)s,
-kasutades kasutajatunnust %(email)s ning omavalitud parooli.
-
-Pange tähele, et kasutajatunnus ja parool on tõutundlikud.
-
-Lugupidamisega,
-Veebiserver
-""" % options)
+                  subject=app.config['REGISTRATION_EMAIL_SUBJECT'],
+                  body=app.config['REGISTRATION_EMAIL_BODY'] % options)
     mail.send(msg)
 
 

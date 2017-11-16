@@ -10,7 +10,7 @@ import traceback
 
 from flask import render_template, flash, Markup, request, redirect, url_for, jsonify, make_response
 from flask_wtf import Form
-from wtforms import StringField, SelectField, PasswordField, BooleanField
+from wtforms import StringField, SelectField, PasswordField, BooleanField, HiddenField
 from wtforms.validators import DataRequired, Email, Length, EqualTo
 from flask_mail import Message
 
@@ -33,8 +33,9 @@ def over():
 class RegistrationForm(Form):
     first_name = StringField('Eesnimi', validators=[DataRequired(), Length(max=255)])
     last_name = StringField('Perenimi', validators=[DataRequired(), Length(max=255)])
-    category = SelectField(u'Rühm', choices=[('', ''), ('poh', u'Põhikool'), ('gym', u'Gümnaasium'), ('eda', u'Edasijõudnud')], validators=[DataRequired()])
+    #category = SelectField(u'Rühm', choices=[('', ''), ('poh', u'Põhikool'), ('gym', u'Gümnaasium'), ('eda', u'Edasijõudnud')], validators=[DataRequired()])
     #category = SelectField('Kategooria', choices=[('', ''), ('school', u'õpilane'), ('university', u'üliõpilane'), ('other', 'muu')], validators=[DataRequired()])
+    category = HiddenField('')
     school = StringField('Kool', validators=[DataRequired(), Length(max=255)], description=u'(kooli ametlik nimi eesti keeles)')
     #school = StringField('Kool/asutus', validators=[DataRequired(), Length(max=255)], description=u'(kooli korral kindlasti ametlik nimi eesti keeles)')
     grade = StringField('Klass', validators=[DataRequired(), Length(max=255)], description=u'(1..12)')
