@@ -35,8 +35,6 @@ def send_activation_email(u):
 
 def register(form):
     try:
-        print "Hi", form
-        print form, form.email
         # Check whether the user with the same email is already registered for the same contest_id
         existing_user = (db.session.query(User).join(Participation)
                         .filter(Participation.contest_id == app.config['CONTEST_ID'])
@@ -58,6 +56,7 @@ def register(form):
                         User.email == form.email.data,
                         User.username == form.username.data)).all():
             db.session.delete(u)  # Note that we delete one by one. This way SQLAlchemy will cascade to UserInfo correctly.
+        db.session.commit()
 
         # Now add a non-activated user to the database, register a participation, and send activation email
         u = User(first_name=form.first_name.data,
@@ -117,7 +116,7 @@ def reset_password(code, new_password):
             u.password = hash_password(new_password)
             db.session.commit()
             flash("Parool vahetatud", "success")
-            return redirect(url_for("index"))
+            return redirect(url_for("blank"))
     else:
         flash(u"Vale või aegunud autentimiskood", "danger")
 

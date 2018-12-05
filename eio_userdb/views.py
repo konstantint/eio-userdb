@@ -50,7 +50,7 @@ class RegistrationForm(Form):
     spacer = HiddenField('')
     username = StringField('Kasutajatunnus', validators=[DataRequired(), Regexp('^[A-Za-z0-9]+$', message=u'Kasutajatunnus peab koosnema tähtedest ja numbritest'),
                                                          Length(max=10, message=u'Kasutajatunnus liiga pikk'), Length(min=2, message=u'Kasutajatunnus liiga lühike')], description=u'Vali kasutajatunnus, mida plaanid kasutada süsteemi sisse logimiseks')
-    password = PasswordField('Parool', validators=[DataRequired(), Length(min=6, message=u'Parool liiga lühike'), 
+    password = PasswordField('Parool', validators=[DataRequired(), Length(min=4, message=u'Parool liiga lühike'), 
                                                    EqualTo('confirm', message=u'Parool ja parooli kordus ei ole identsed'),
                                                    Length(max=100)])
     confirm = PasswordField('Parooli kordus')
@@ -80,10 +80,10 @@ class ActivateForm(Form):
 
 @app.route('/activate', methods=('GET', 'POST'))
 def activate():
-    form = ActivateForm(request.form)
-    if form.validate_on_submit():
+    form = ActivateForm(request.args if request.method == 'GET' else request.form, csrf_enabled=False)
+    if 'code' in request.args and form.validate():
         if logic.activate(form.code.data.strip()):
-            flash('Kasutaja aktiveeritud', 'success')
+            flash(Markup(u'Kasutaja aktiveeritud. Peale võistluse algust saate sellele ligi lehel <a href="http://cms.eio.ee/">cms.eio.ee</a>.'), 'success')
             return redirect(url_for('blank'))
         else:
             flash(u'Vale või aegunud aktiveerimiskood', 'danger')
@@ -91,9 +91,9 @@ def activate():
 
 # ---------------------------------------------------------------------------- #
 class PasswordForm(Form):
-    password = PasswordField('Uus parool', validators=[DataRequired(), Length(min=7, message=u'Parool liiga lühike'), 
+    password = PasswordField('Uus parool', validators=[DataRequired(), Length(min=4, message=u'Parool liiga lühike'), 
                                                    EqualTo('confirm', message=u'Parool ja parooli kordus ei ole identsed'),
-                                                   Length(max=255)])
+                                                   Length(max=100)])
     confirm = PasswordField('Parooli kordus')
 
 class EmailForm(Form):

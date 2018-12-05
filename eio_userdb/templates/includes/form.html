@@ -20,8 +20,8 @@
     </div>
 {%- endmacro %}
 
-{% macro render_form(form, submit_text="Submit") -%}
-<form class="form-horizontal" role="form" method="post">
+{% macro render_form(form, submit_text="Submit", method="post") -%}
+<form class="form-horizontal" role="form" method="{{method}}">
     {{ form.hidden_tag() }}
     {% for f in form %}
         {% if f.type == 'BooleanField' %}
