@@ -14,6 +14,7 @@ REGISTRATION_SERVER_URL = 'http://localhost:5000/'
 CONTEST_SERVER_URL = 'http://localhost/'
 CONTACT_URL = 'http://eio.ut.ee/'
 
+import os
 # Database connection
 SQLALCHEMY_DATABASE_URI = 'sqlite:///%s' % os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'db.sqlite')
 
@@ -30,4 +31,22 @@ MAIL_USE_SSL = False
 MAIL_USERNAME = None
 MAIL_PASSWORD = None
 MAIL_DEFAULT_SENDER = 'Eesti Informaatika Olympiaadide Server <kt@ut.ee>'
+MAIL_SUPPRESS_SEND = True
+MAIL_DEBUG = True
+
+REGISTRATION_EMAIL_SUBJECT = "Registreerimise kinnitus"
+REGISTRATION_EMAIL_BODY = u"""Olete registreerunud EIO lahenduste esitamise süsteemi kasutajaks lahtiseks võistluseks.
+
+Oma konto aktiveerimiseks sisestage järgneva 20 tunni jooksul kood
+%(activation_code)s lehel %(registration_server_url)sactivate.
+
+Kui see on tehtud, saate 16. oktoobril võistlusserverisse sisse logida lehel
+%(contest_server_url)s,
+kasutades kasutajatunnust %(username)s ning omavalitud parooli.
+
+Pange tähele, et kasutajatunnus ja parool on tõstutundlikud.
+
+Lugupidamisega,
+Veebiserver
+"""
 

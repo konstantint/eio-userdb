@@ -20,7 +20,8 @@ setup(name='eio-userdb',
       include_package_data=True,
       zip_safe=False,
       install_requires=[
-          "Flask", "Flask-SQLAlchemy", "Flask-Login", "Flask-WTF", "Flask-Mail", "Flask-Babel", "Flask-Admin"
+          "Flask", "Flask-SQLAlchemy", "Flask-Login", "Flask-WTF", "Flask-Mail", "Flask-Babel", "Flask-Admin", # "pycrypto"  (in Windows should be "pycryptodome")
+         "future", "bcrypt", 
       ],
       entry_points={
         "console_scripts": ["eioUserDB=eio_userdb:main"],

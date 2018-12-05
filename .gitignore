@@ -4,3 +4,5 @@
 settings.py
 build/
 dist/
+venv/
+__pycache__

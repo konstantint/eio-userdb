@@ -14,7 +14,7 @@ from flask_wtf import Form
 from wtforms.fields import PasswordField
 from wtforms.validators import DataRequired, AnyOf
 
-from .model import Registration, User
+from .model import User
 from .main import app, db
 
 class DumbUser(login.UserMixin):
@@ -59,5 +59,5 @@ class MyModelView(sqla.ModelView):
         return not login.current_user.is_anonymous()
 
 admin = admin.Admin(app, index_view=MyAdminIndexView())
-admin.add_view(MyModelView(Registration, db.session))
+#admin.add_view(MyModelView(Registration, db.session))
 admin.add_view(MyModelView(User, db.session))

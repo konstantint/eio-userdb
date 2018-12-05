@@ -11,11 +11,11 @@ import traceback
 from flask import render_template, flash, Markup, request, redirect, url_for, jsonify, make_response
 from flask_wtf import Form
 from wtforms import StringField, SelectField, PasswordField, BooleanField, HiddenField
-from wtforms.validators import DataRequired, Email, Length, EqualTo
+from wtforms.validators import DataRequired, Email, Length, EqualTo, Regexp, ValidationError
 from flask_mail import Message
 
-from .main import app, db, mail
-from .model import Registration
+from .main import app, mail
+from .model import db, User, Participation
 from . import logic
 
 import logging
@@ -26,9 +26,14 @@ log = logging.getLogger('eio_userdb.views')
 def index():
     return redirect(url_for('register'))
 
+@app.route('/blank')
+def blank():
+    return render_template('base.html')
+
 @app.route('/over')
 def over():
     return render_template('over.html')
+
 # ---------------------------------------------------------------------------- #
 class RegistrationForm(Form):
     first_name = StringField('Eesnimi', validators=[DataRequired(), Length(max=255)])
@@ -41,25 +46,29 @@ class RegistrationForm(Form):
     grade = StringField('Klass', validators=[DataRequired(), Length(max=255)], description=u'(1..12)')
     #grade = StringField('Klass', validators=[DataRequired(), Length(max=255)], description=u'(õpilastel 1..12, üliõpilastel I..V, muudel -)')
     email = StringField('Meiliaadress', validators=[DataRequired(), Email(), Length(max=120)])
+    spacer = HiddenField('')
+    username = StringField('Kasutajatunnus', validators=[DataRequired(), Regexp('^[A-Za-z0-9]+$', message=u'Kasutajatunnus peab koosnema tähtedest ja numbritest'),
+                                                         Length(max=10, message=u'Kasutajatunnus liiga pikk'), Length(min=2, message=u'Kasutajatunnus liiga lühike')], description=u'Vali kasutajatunnus, mida plaanid kasutada süsteemi sisse logimiseks')
     password = PasswordField('Parool', validators=[DataRequired(), Length(min=6, message=u'Parool liiga lühike'), 
                                                    EqualTo('confirm', message=u'Parool ja parooli kordus ei ole identsed'),
-                                                   Length(max=255)],
-                                       description=u'Palun, ära kasuta siin oma mujal juba kasutusel oleva parooli!')
+                                                   Length(max=100)])
     confirm = PasswordField('Parooli kordus')
     agree = BooleanField(u'Olen nõus, et minu andmeid kasutatakse informaatikavõistlustega seotud teavitusteks', validators=[DataRequired(message=u'Puudub nõusolek andmete kasutamiseks')])
+
+    def validate_username(form, field):
+        """Disallow usernames which are already present in the contest but associated with a different email"""
+        if (db.session.query(User).join(Participation)
+                .filter(Participation.contest_id == app.config['CONTEST_ID'])
+                .filter(User.email != form.email.data)
+                .filter(User.username == field.data)).count():
+            raise ValidationError("Antud kasutajatunnus on juba kasutusel")
+
 
 @app.route('/register', methods=('GET', 'POST'))
 def register():
     form = RegistrationForm(request.form)
     if form.validate_on_submit():
-        r = Registration(first_name=form.first_name.data,
-                         last_name=form.last_name.data,
-                         category=form.category.data,
-                         school=form.school.data,
-                         grade=form.grade.data,
-                         email=form.email.data,
-                         password=form.password.data)
-        result = logic.register(r)
+        result = logic.register(form)
         if result is not None:
             return result
     return render_template('register.html', form=form)

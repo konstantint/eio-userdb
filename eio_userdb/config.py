@@ -9,7 +9,7 @@ import os
 
 class Config(object):
     # Development settings
-    DEBUG = True
+    DEBUG = False
     SQLALCHEMY_ECHO = True
     MAIL_SUPPRESS_SEND = False
     
@@ -40,6 +40,24 @@ class Config(object):
     MAIL_DEFAULT_SENDER = 'Eesti Informaatika Olympiaadide Server <kt@ut.ee>'
     MAIL_MAX_EMAILS = None
     MAIL_ASCII_ATTACHMENTS = False
+    MAIL_SUPPRESS_SEND = False
+    MAIL_DEBUG = False
+
+    REGISTRATION_EMAIL_SUBJECT = "Registreerimise kinnitus"
+    REGISTRATION_EMAIL_BODY = u"""Olete registreerunud EIO lahenduste esitamise süsteemi kasutajaks lahtiseks võistluseks.
+
+Oma konto aktiveerimiseks sisestage järgneva 20 tunni jooksul kood
+%(activation_code)s lehel %(registration_server_url)sactivate.
+
+Kui see on tehtud, saate 16. oktoobril võistlusserverisse sisse logida lehel
+%(contest_server_url)s,
+kasutades kasutajatunnust %(username)s ning omavalitud parooli.
+
+Pange tähele, et kasutajatunnus ja parool on tõstutundlikud.
+
+Lugupidamisega,
+Veebiserver
+"""
     
     # Should not be changed
     # Enable string translation in forms    

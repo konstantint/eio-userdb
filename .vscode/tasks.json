@@ -1,0 +1,75 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "type": "shell",
+    "command": "eioUserDB",
+    "isBackground": true,
+    "options": {
+        "env": {"PATH": "./venv/Scripts"}
+    },
+    "presentation": {
+        "panel": "dedicated"
+    },
+    "tasks": [
+        {
+            "label": "run",
+            "type": "shell",
+            "problemMatcher": []
+        },
+        {
+            "label": "shell",
+            "type": "shell",
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "new",
+                "focus": true
+            }
+        },
+        {
+            "label": "py.test: all tests",
+            "command": "py.test",
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated"
+            },
+            "group": "test"
+        },
+        {
+            "label": "py.test: current file",
+            "command": "py.test",
+            "args": ["${file}"],
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated"
+            },
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "pylint: whole project",
+            "command": "pylint --msg-template \"{path}:{line}:{column}:{category}:{symbol} - {msg}\" adam tests",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": {
+                "owner": "pylint",
+                "fileLocation": ["relative", "${workspaceFolder}"],
+                "pattern": {
+                    "regexp": "^(.+):(\\d+):(\\d+):(\\w+):(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            }
+        }
+    ]
+}
