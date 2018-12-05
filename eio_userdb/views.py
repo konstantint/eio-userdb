@@ -13,6 +13,7 @@ from flask_wtf import Form
 from wtforms import StringField, SelectField, PasswordField, BooleanField, HiddenField
 from wtforms.validators import DataRequired, Email, Length, EqualTo, Regexp, ValidationError
 from flask_mail import Message
+from sqlalchemy import or_
 
 from .main import app, mail
 from .model import db, User, Participation
@@ -59,7 +60,7 @@ class RegistrationForm(Form):
         """Disallow usernames which are already present in the contest but associated with a different email"""
         if (db.session.query(User).join(Participation)
                 .filter(Participation.contest_id == app.config['CONTEST_ID'])
-                .filter(User.email != form.email.data)
+                .filter(or_(User.email == None, User.email != form.email.data))
                 .filter(User.username == field.data)).count():
             raise ValidationError("Antud kasutajatunnus on juba kasutusel")
 
@@ -83,7 +84,7 @@ def activate():
     if form.validate_on_submit():
         if logic.activate(form.code.data.strip()):
             flash('Kasutaja aktiveeritud', 'success')
-            return redirect(url_for('index'))
+            return redirect(url_for('blank'))
         else:
             flash(u'Vale või aegunud aktiveerimiskood', 'danger')
     return render_template('activate.html', form=form)

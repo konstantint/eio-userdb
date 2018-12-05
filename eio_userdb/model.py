@@ -12,6 +12,7 @@ from sqlalchemy.orm import relationship, backref
 
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy.sql.expression import ColumnClause
+from sqlalchemy.dialects.postgresql import ARRAY, CIDR
 from .cmscommon.crypto import *
 
 db = SQLAlchemy()
@@ -108,9 +109,9 @@ class User(Base):
     # FIXME: possibly move it to Participation and change it back to
     # primary_statements
     preferred_languages = Column(
-        String,
+        ARRAY(String),
         nullable=False,
-        default='')
+        default=[])
 
     # These one-to-many relationships are the reversed directions of
     # the ones defined in the "child" classes using foreign keys.
