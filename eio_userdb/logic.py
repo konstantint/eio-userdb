@@ -137,9 +137,9 @@ def send_password_reset_mail(email):
                       body=u"""Keegi (arvatavasti Teie ise) soovis vahetada Teie EIO kasutaja parooli.
                       
 Parooli saate vahetada lehel %(registration_server_url)spasswordreset/%(activation_code)s
-järgmise poole tunni jooksul. Teie kasutajatunnus on, muidu, %(username)s.
+järgmise poole tunni jooksul. Teie kasutajatunnus on %(username)s.
 
-Kui Te ise paroolivahetust ei tellinud, ignoreerige see kiri.
+Kui Te ise paroolivahetust ei tellinud, ignoreerige seda kirja.
 
 Lugupidamisega,
 Veebiserver
