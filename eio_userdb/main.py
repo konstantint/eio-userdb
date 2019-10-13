@@ -6,7 +6,7 @@ Copyright 2014, EIO Team.
 License: MIT
 """
 import os
-from flask import Flask
+from flask import Flask, session
 import logging
 log = logging.getLogger('eio_userdb')
 
@@ -30,7 +30,7 @@ from flask.ext.babel import Babel
 babel = Babel(app)
 @babel.localeselector
 def get_locale():
-    return 'et'
+        return session.get('lang', 'et')
 
 # ------------ DB ------------- #
 from .model import db

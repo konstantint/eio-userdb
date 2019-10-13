@@ -32,6 +32,8 @@ class UserInfo(Base):
     category = Column(String, nullable=False)
     school = Column(Unicode, nullable=False)
     grade = Column(Unicode, nullable=False)
+    code_lang = Column(Unicode, nullable=True)
+    text_lang = Column(Unicode, nullable=True)
     registration_time = Column(DateTime)
     registration_ip = Column(String)
     activated = Column(Boolean, default=False)

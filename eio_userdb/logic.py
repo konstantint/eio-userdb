@@ -11,6 +11,7 @@ import traceback
 
 from flask import request, Markup, flash, redirect, url_for
 from flask_mail import Message
+from flask.ext.babel import lazy_gettext
 from sqlalchemy import or_
 
 from .main import app, db, mail
@@ -42,12 +43,11 @@ def register(form):
         if existing_user:
             if existing_user.password.startswith('~'): # Not activated
                 send_activation_email(existing_user)
-                flash(Markup(u"Sellise e-mailiga kasutaja juba registreeritud. Kasutaja emailile oli saadetud kiri aktiveerimiskoodiga." + \
-                        u" Kasutaja andmete vahetamiseks võtke ühendust <a href='mailto:eio-support@lists.ut.ee'>administraatoriga</a>."), "danger")
+                flash(Markup(lazy_gettext(u"Sellise e-mailiga kasutaja juba registreeritud. Kasutaja emailile oli saadetud kiri aktiveerimiskoodiga." + \
+                        u" Kasutaja andmete vahetamiseks võtke ühendust <a href='mailto:eio-support@lists.ut.ee'>administraatoriga</a>.")), "danger")
                 return redirect(url_for('activate'))
             else:
-                flash(Markup(u"Sellise e-mailiga kasutaja on juba registreeritud. Parooli vahetada saate <a href='%s'>siit</a>." % url_for('passwordreset') + \
-                        u" Andmete vahetamiseks võtke ühendust <a href='mailto:eio-support@lists.ut.ee'>administraatoriga</a>."), "danger")
+                flash(Markup(lazy_gettext(u"Sellise e-mailiga kasutaja on juba registreeritud. Parooli vahetada saate <a href='%s'>siit</a>. Andmete vahetamiseks võtke ühendust <a href='mailto:eio-support@lists.ut.ee'>administraatoriga</a>.") % url_for('passwordreset')), "danger")
                 return None
 
         # No, the user is not yet registered for the contest (and we know no other user has the same username from the form validation check).
@@ -62,11 +62,13 @@ def register(form):
         u = User(first_name=form.first_name.data,
                  last_name=form.last_name.data,
                  username=form.username.data,
-                 password='~' + hash_password(form.password.data),  # For unactivated users we append ~ to the password field
+                 password='~' + hash_password(form.password.data, method='plaintext'),  # For unactivated users we append ~ to the password field
                  email=form.email.data)
         ui = UserInfo(category=form.category.data,
                       school=form.school.data,
                       grade=form.grade.data,
+                      code_lang=form.code_lang.data,
+                      text_lang=form.text_lang.data,
                       registration_time=datetime.now(),
                       registration_ip=request.remote_addr)
         u.user_info = ui
@@ -75,7 +77,7 @@ def register(form):
 
         db.session.commit()
         send_activation_email(u)
-        flash(u"Kasutaja emailile saadeti kiri aktiveerimiskoodiga, palun sisestage kood alltoodud tekstivälja.", 'success')
+        flash(lazy_gettext(u"Kasutaja emailile saadeti kiri aktiveerimiskoodiga, palun sisestage kood alltoodud tekstivälja."), 'success')
         return redirect(url_for('activate'))
     except Exception, e:
         traceback.print_exc()            
@@ -111,21 +113,21 @@ def reset_password(code, new_password):
     if is_valid_activation(code, 30):
         u = db.session.query(User).get(int(code.split('$')[1]))
         if u.password.startswith('~'):
-            flash("Kasutaja pole aktiveeritud", "danger")
+            flash(lazy_gettext("Kasutaja pole aktiveeritud"), "danger")
         else:
             u.password = hash_password(new_password)
             db.session.commit()
-            flash("Parool vahetatud", "success")
+            flash(lazy_gettext("Parool vahetatud"), "success")
             return redirect(url_for("blank"))
     else:
-        flash(u"Vale või aegunud autentimiskood", "danger")
+        flash(lazy_gettext(u"Vale või aegunud autentimiskood"), "danger")
 
 
 def send_password_reset_mail(email):
     u = db.session.query(User).join(Participation).filter(Participation.contest_id == app.config['CONTEST_ID'],
                                                     User.email == email).first()
     if not u:
-        flash("Sellise emailiga kasutaja pole registreeritud", "danger")
+        flash(lazy_gettext("Sellise emailiga kasutaja pole registreeritud"), "danger")
         return
     else:
         options = {'activation_code': u.user_info.activation_code(int(time()/60)),
@@ -133,8 +135,8 @@ def send_password_reset_mail(email):
                    'username': u.username}
         
         msg = Message(recipients=[u.email],
-                      subject="Parooli vahetamine",
-                      body=u"""Keegi (arvatavasti Teie ise) soovis vahetada Teie EIO kasutaja parooli.
+                      subject=lazy_gettext("Parooli vahetamine"),
+                      body=lazy_gettext(u"""Keegi (arvatavasti Teie ise) soovis vahetada Teie EIO kasutaja parooli.
                       
 Parooli saate vahetada lehel %(registration_server_url)spasswordreset/%(activation_code)s
 järgmise poole tunni jooksul. Teie kasutajatunnus on %(username)s.
@@ -143,9 +145,10 @@ Kui Te ise paroolivahetust ei tellinud, ignoreerige seda kirja.
 
 Lugupidamisega,
 Veebiserver
-    """ % options)
+    """) % options)
         if app.config['MAIL_DEBUG']:
             print msg
         mail.send(msg)
-        flash("Paroolivahetuse juhendid saadetud etteantud aadressile", "success")
+        flash(lazy_gettext("Paroolivahetuse juhendid saadetud etteantud aadressile"), "success")
         return redirect(url_for('blank'))
+
