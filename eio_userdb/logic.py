@@ -115,7 +115,7 @@ def reset_password(code, new_password):
         if u.password.startswith('~'):
             flash(lazy_gettext("Kasutaja pole aktiveeritud"), "danger")
         else:
-            u.password = hash_password(new_password)
+            u.password = hash_password(new_password, method='plaintext')
             db.session.commit()
             flash(lazy_gettext("Parool vahetatud"), "success")
             return redirect(url_for("blank"))
