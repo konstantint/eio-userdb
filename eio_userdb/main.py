@@ -21,10 +21,6 @@ if 'EIO_SETTINGS' in os.environ:
     log.debug('Loading settings from %s' % os.environ['EIO_SETTINGS'])
     app.config.from_envvar('EIO_SETTINGS')
 
-# ------------ Auto-fix proxy IP address and host ------ #
-from werkzeug.contrib.fixers import ProxyFix
-app.wsgi_app = ProxyFix(app.wsgi_app)
-
 # ------------ I18N ------------- #
 from flask.ext.babel import Babel
 babel = Babel(app)
@@ -44,6 +40,10 @@ mail.init_app(app)
 # ------------ Web ------------- #
 from . import views
 from . import admin
+
+# ------------ Auto-fix proxy IP address and host ------ #
+from werkzeug.contrib.fixers import ProxyFix
+app.wsgi_app = ProxyFix(app.wsgi_app)
 
 # ----------- Interface with PasteDeploy ----- #
 def app_factory(global_config, **local_conf):

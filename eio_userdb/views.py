@@ -13,7 +13,7 @@ from flask_wtf import Form
 from wtforms import StringField, SelectField, PasswordField, BooleanField, HiddenField
 from wtforms.validators import DataRequired, Email, Length, EqualTo, Regexp, ValidationError
 from flask_mail import Message
-from flask.ext.babel import lazy_gettext
+from flask.ext.babel import lazy_gettext, gettext
 from sqlalchemy import or_
 
 from .main import app, mail
@@ -101,10 +101,10 @@ def activate():
     form = ActivateForm(request.args if request.method == 'GET' else request.form, csrf_enabled=False)
     if 'code' in request.args and form.validate():
         if logic.activate(form.code.data.strip()):
-            flash(Markup(lazy_gettext(u'Kasutaja aktiveeritud. Peale võistluse algust saate sellele ligi lehel <a href="http://cms.eio.ee/">cms.eio.ee</a>.')), 'success')
+            flash(Markup(gettext(u'Kasutaja aktiveeritud. Peale võistluse algust saate sellele ligi lehel <a href="http://cms.eio.ee/">cms.eio.ee</a>.')), 'success')
             return redirect(url_for('blank'))
         else:
-            flash(lazy_gettext(u'Vale või aegunud aktiveerimiskood'), 'danger')
+            flash(gettext(u'Vale või aegunud aktiveerimiskood'), 'danger')
     return render_template('activate.html', form=form)
 
 # ---------------------------------------------------------------------------- #
