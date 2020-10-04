@@ -30,19 +30,19 @@ MAIL_USE_TLS = False
 MAIL_USE_SSL = False
 MAIL_USERNAME = None
 MAIL_PASSWORD = None
-MAIL_DEFAULT_SENDER = 'Eesti Informaatika Olympiaadide Server <kt@ut.ee>'
+MAIL_DEFAULT_SENDER = 'Eesti Informaatikaolümpiaadide server <eio@eio.ee>'
 MAIL_SUPPRESS_SEND = True
 MAIL_DEBUG = True
 
 REGISTRATION_EMAIL_SUBJECT = "Registreerimise kinnitus"
-REGISTRATION_EMAIL_BODY = u"""Olete registreerunud EIO lahenduste esitamise süsteemi kasutajaks lahtiseks võistluseks.
+REGISTRATION_EMAIL_BODY = u"""Olete registreerunud EIO lahenduste esitamise süsteemi kasutajaks.
 
 Oma konto aktiveerimiseks sisestage järgneva 20 tunni jooksul kood
 %(activation_code)s lehel %(registration_server_url)sactivate.
 
-Kui see on tehtud, saate 16. oktoobril võistlusserverisse sisse logida lehel
+Kui see on tehtud, saate võistluse alates serverisse sisse logida lehel
 %(contest_server_url)s,
-kasutades kasutajatunnust %(username)s ning omavalitud parooli.
+kasutades kasutajatunnust %(username)s ning parooli %(password)s.
 
 Pange tähele, et kasutajatunnus ja parool on tõstutundlikud.
 

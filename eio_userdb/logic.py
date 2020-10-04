@@ -18,14 +18,23 @@ from .main import app, db, mail
 from .model import User, Participation, UserInfo
 from .cmscommon.crypto import hash_password
 
+import hashlib
+
 def getstr():
     return gettext('Kool/asutus')
 
 def send_activation_email(u):
+    if u.password.startswith('~plaintext:'):
+        password = u.password[11:]
+    elif u.password.startswith('plaintext:'):
+        password = u.password[10:]
+    else:
+        password = None
     options = {'activation_code': u.user_info.activation_code(int(time()/60)),
                'registration_server_url': app.config['REGISTRATION_SERVER_URL'],
                'contest_server_url': app.config['CONTEST_SERVER_URL'],
                'username': u.username,
+               'password': password,
                'email': u.email}
     
     msg = Message(recipients=[u.email],
@@ -45,11 +54,11 @@ def register(form):
         if existing_user:
             if existing_user.password.startswith('~'): # Not activated
                 send_activation_email(existing_user)
-                flash(Markup(gettext(u"Sellise e-mailiga kasutaja juba registreeritud. Kasutaja emailile oli saadetud kiri aktiveerimiskoodiga." + \
-                        u" Kasutaja andmete vahetamiseks võtke ühendust <a href='mailto:eio-support@lists.ut.ee'>administraatoriga</a>.")), "danger")
+                flash(Markup(gettext(u"Sellise aadressiga kasutaja on juba registreeritud ja aktiveerimikood saadetud. " + \
+                        u"Kasutaja andmete muutmiseks võtke ühendust <a href='mailto:eio-support@lists.ut.ee'>administraatoriga</a>.")), "danger")
                 return redirect(url_for('activate'))
             else:
-                flash(Markup(gettext(u"Sellise e-mailiga kasutaja on juba registreeritud. Parooli vahetada saate <a href='%(url)s'>siit</a>. Andmete vahetamiseks võtke ühendust <a href='mailto:eio-support@lists.ut.ee'>administraatoriga</a>.", url=url_for('passwordreset'))), "danger")
+                flash(Markup(gettext(u"Sellise aadressiga kasutaja on juba registreeritud. Parooli vahetada saate <a href='%(url)s'>siit</a>. Muude andmete muutmiseks võtke ühendust <a href='mailto:eio-support@lists.ut.ee'>administraatoriga</a>.", url=url_for('passwordreset'))), "danger")
                 return None
 
         # No, the user is not yet registered for the contest (and we know no other user has the same username from the form validation check).
@@ -61,10 +70,11 @@ def register(form):
         db.session.commit()
 
         # Now add a non-activated user to the database, register a participation, and send activation email
+        p = hashlib.sha256('magic' + str(time) + form.username.data).hexdigest()[:10]
         u = User(first_name=form.first_name.data,
                  last_name=form.last_name.data,
                  username=form.username.data,
-                 password='~' + hash_password(form.password.data, method='plaintext'),  # For unactivated users we append ~ to the password field
+                 password='~' + hash_password(p, method='plaintext'),  # For unactivated users we prepend ~ to the password field
                  email=form.email.data)
         ui = UserInfo(category=form.category.data,
                       school=form.school.data,

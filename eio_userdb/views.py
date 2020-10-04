@@ -68,10 +68,10 @@ class RegistrationForm(Form):
     spacer = HiddenField('')
     username = StringField(lazy_gettext('Kasutajatunnus'), validators=[DataRequired(), Regexp('^[A-Za-z0-9]+$', message=lazy_gettext(u'Kasutajatunnus peab koosnema tähtedest ja numbritest')),
                                                          Length(max=10, message=lazy_gettext(u'Kasutajatunnus liiga pikk')), Length(min=2, message=lazy_gettext(u'Kasutajatunnus liiga lühike'))], description=lazy_gettext(u'Vali kasutajatunnus, mida plaanid kasutada süsteemi sisse logimiseks'))
-    password = PasswordField(lazy_gettext('Parool'), validators=[DataRequired(), Length(min=4, message=lazy_gettext(u'Parool liiga lühike')), 
-                                                   EqualTo('confirm', message=lazy_gettext(u'Parool ja parooli kordus ei ole identsed')),
-                                                   Length(max=100)])
-    confirm = PasswordField(lazy_gettext('Parooli kordus'))
+    #password = PasswordField(lazy_gettext('Parool'), validators=[DataRequired(), Length(min=4, message=lazy_gettext(u'Parool liiga lühike')), 
+    #                                               EqualTo('confirm', message=lazy_gettext(u'Parool ja parooli kordus ei ole identsed')),
+    #                                               Length(max=100)])
+    #confirm = PasswordField(lazy_gettext('Parooli kordus'))
     agree = BooleanField(lazy_gettext(u'Olen nõus, et minu andmeid kasutatakse informaatikavõistlustega seotud teavitusteks'), validators=[DataRequired(message=lazy_gettext(u'Puudub nõusolek andmete kasutamiseks'))])
 
     def validate_username(form, field):
