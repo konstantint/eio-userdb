@@ -13,6 +13,7 @@ CONTEST_TITLE = u'Eesti Informaatika Olümpiaadi Eelvoor'
 REGISTRATION_SERVER_URL = 'http://localhost:5000/'
 CONTEST_SERVER_URL = 'http://localhost/'
 CONTACT_URL = 'http://eio.ut.ee/'
+MAGIC = 'magic' # seed for user password generatio, CHANGE THIS!
 
 import os
 # Database connection
